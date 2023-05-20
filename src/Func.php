@@ -28,6 +28,16 @@ class Func {
         return $result->fetchArray(\SQLITE3_ASSOC);
     }
 
+    public function getByHash(string $hash = null) {
+        if (!$hash) {
+            return false;
+        }
+        $stmt = $this->db->prepare('SELECT * FROM fn WHERE hash = :hash');
+        $stmt->bindValue(':hash', $hash, SQLITE3_TEXT);
+        $result = $stmt->execute();
+        return $result->fetchArray(\SQLITE3_ASSOC);
+    }
+
     public function getCodeSnippet(array $fn) :string {
         return file_get_contents(FUNCTIONS_DIR . $fn["hash"] . DIRECTORY_SEPARATOR . "index." .Runtime::FILE_EXT[$fn["runtime"]]);
     }
@@ -79,9 +89,7 @@ class Func {
 
     public function removeFiles($folder) {
         if (is_dir(FUNCTIONS_DIR . $folder)) {
-
             array_map('unlink', glob(FUNCTIONS_DIR."$folder/*.*"));
-
             rmdir(FUNCTIONS_DIR . $folder);
         }
     }
@@ -95,7 +103,6 @@ class Func {
         foreach($fns as $key => $fn) {
             $fns[$key]["trigger"] = Trigger::AS_ARRAY[$fn["trigger_type"]];  
         }
-
         return $fns;
     }
   
