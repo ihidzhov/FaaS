@@ -15,10 +15,10 @@
       <h1 class="site-title">FaaS (Lambda / Cloud Functions)</h1>
       <nav>
         <ul>
-          <li><a href="index.php?page=dashboard">Dashboard</a></li>
-          <li><a href="index.php?page=funcs">Functions</a></li>
-          <li><a href="index.php?page=logs">Logs</a></li>
-          <li><a href="index.php?page=configs">Configs</a></li>
-          <li><a href="index.php?page=docs">Docs</a></li>
+          <li><a href="index.php?action=dashboard">Dashboard</a></li>
+          <li><a href="index.php?action=funcs">Functions</a></li>
+          <li><a href="index.php?action=logs">Logs</a></li>
+          <li><a href="index.php?action=configs">Configs</a></li>
+          <li><a href="index.php?action=docs">Docs</a></li>
         </ul>
       </nav>

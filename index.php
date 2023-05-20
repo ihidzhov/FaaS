@@ -9,15 +9,9 @@ use Ihidzhov\FaaS\DB;
 use Ihidzhov\FaaS\Request;
 
 define("ROOT_DIR", dirname(__FILE__));
-define("DATABASE_DIR", ROOT_DIR . DIRECTORY_SEPARATOR . "database" . DIRECTORY_SEPARATOR);
-define("TEMPLATES_DIR", ROOT_DIR . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR);
-define("FUNCTIONS_DIR", ROOT_DIR . DIRECTORY_SEPARATOR . "fn" . DIRECTORY_SEPARATOR);
-
+require_once __DIR__ . '/src/constants.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
-// index.php?page=dashboard
-// index.php?lambda=logs
- 
 $app = new App();
 $dbLambda = new DB(DB::SCHEMA_LAMBDA);
 $page = new Page();
@@ -75,12 +69,13 @@ $app->post("api-save-func", function() use($functions) {
         echo json_encode(["status"=>"error","message"=>"Wrong request data"]);
         exit;
     }
+    $response = [];
     if ($id) {
         if ($functions->update($id, $triggerType, $triggerDetails)) {
             $fn = $functions->get($id);
             if ($fn) {
                 $functions->saveToFile($functions->generateFileName($fn["hash"]), $code);
-                echo json_encode(["status"=>"success","data"=>$fn]);
+                $response = ["status"=>"success","data"=>$fn];
             }
         }
     } else {
@@ -88,11 +83,12 @@ $app->post("api-save-func", function() use($functions) {
         $id = $functions->insert($hash, $functionName, $triggerType, $triggerDetails);
         if ($id) {
             $functions->saveToFile($functions->generateFileName($hash), $code);
-            echo json_encode(["status"=>"success","data"=>["id"=>$id]]);
+            $response = ["status"=>"success","data"=>["id"=>$id]];
         } else {
-            echo json_encode(["status"=>"error","message"=>"DB Error"]);
+            $response = ["status"=>"error","message"=>"DB Error"];
         } 
     }
+    echo json_encode($response);
     exit;
 });
 $app->delete("api-delete-func", function() use($functions) {
@@ -101,21 +97,18 @@ $app->delete("api-delete-func", function() use($functions) {
         echo json_encode(["status"=>"error","message"=>"ID requred"]);
         exit;
     }
+    $response = [];
     $fn = $functions->get($id);
     if ($fn) {
         if ($functions->delete($id)) {
             $functions->removeFiles($functions->generateFileName($fn["hash"]));
-            echo json_encode(["status"=>"success","data"=>$fn]);
+            $response = ["status"=>"success","data"=>$fn];
         }
     } else {
-        echo json_encode(["status"=>"error","message"=>"ID not found"]);
-        exit;
+        $response = ["status"=>"error","message"=>"ID not found"];
     }
+    echo json_encode($response);
     exit;
 });
 
-
-
 $app->run();
-
- 

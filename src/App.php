@@ -5,7 +5,7 @@ namespace Ihidzhov\FaaS;
 use Exception;
 
 class App {
-    
+
     private array $paths = [];
 
     public function get(array|string $path, $cb) :void {
@@ -28,7 +28,7 @@ class App {
     }
 
     public function run() {
-        $r = isset($_REQUEST['page']) ? trim(mb_strtolower($_REQUEST['page'])) : null;
+        $r = isset($_REQUEST['action']) ? trim(mb_strtolower($_REQUEST['action'])) : null;
         $cb = null;
         foreach($this->paths as $p) {
             if (is_array($p["path"])) {
