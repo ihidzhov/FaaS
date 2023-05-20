@@ -20,8 +20,17 @@ $functions = new Func($dbLambda);
 
 // Web pages
 
-$app->get(["dashboard",null], function() use($page) {
-    $page->display("dashboard");
+$app->get(["dashboard",null], function() use($page, $functions) {
+    $count = $functions->getCount();
+    $php = $functions->getCountByRuntime(Runtime::RT_PHP);
+    $node = $functions->getCountByRuntime(Runtime::RT_NODE);
+    $latest = $functions->getMany();
+    $page->display("dashboard",[
+        "count" => $count, 
+        "php_count" => $php, 
+        "node_count" => $node,
+        "latest" => $functions->prepareForListing($latest)
+    ]);
 });
 $app->get("funcs", function() use($page, $functions) {
     $data = $functions->prepareForListing($functions->getAll());

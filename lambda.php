@@ -3,10 +3,8 @@ namespace Ihidzhov\FaaS;
 
 use Ihidzhov\FaaS\Config;
 use Ihidzhov\FaaS\Func;
-use Ihidzhov\FaaS\Trigger;
 use Ihidzhov\FaaS\Log;
 use Ihidzhov\FaaS\DB;
-use Ihidzhov\FaaS\Request;
 use Ihidzhov\FaaS\Runtime;
 
 define("ROOT_DIR", dirname(__FILE__));

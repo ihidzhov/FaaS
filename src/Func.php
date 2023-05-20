@@ -102,8 +102,34 @@ class Func {
     public function prepareForListing($fns) {
         foreach($fns as $key => $fn) {
             $fns[$key]["trigger"] = Trigger::AS_ARRAY[$fn["trigger_type"]];  
+            $fns[$key]["runtime_name"] = Runtime::RT_ARRAY[$fn["runtime"]];  
         }
         return $fns;
+    }
+
+    public function getCount() :int {
+        $stmt = $this->db->prepare('SELECT COUNT(id) AS cnt FROM fn'); 
+        $result = $stmt->execute();
+        return $result->fetchArray(\SQLITE3_ASSOC)["cnt"];
+    }
+
+    public function getCountByRuntime(int $runtime) :int {
+        if (!$runtime) {
+            return false;
+        }
+        $stmt = $this->db->prepare('SELECT COUNT(id) AS cnt FROM fn WHERE runtime = :runtime'); 
+        $stmt->bindValue(':runtime', $runtime, SQLITE3_INTEGER);
+        $result = $stmt->execute();
+        return $result->fetchArray(\SQLITE3_ASSOC)["cnt"];
+    }
+
+    public function getMany($limit = 5, $order = "DESC") :array {
+        $result = $this->db->query("SELECT * FROM fn ORDER BY id {$order} LIMIT {$limit} ");
+        $data = [];
+        while($row = $result->fetchArray(\SQLITE3_ASSOC)) {
+            $data[] = $row;
+        }
+        return $data;
     }
   
 }
