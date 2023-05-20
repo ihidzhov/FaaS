@@ -21,6 +21,7 @@
               <th scope="col">ID</th>
               <th scope="col">Name</th>
               <th scope="col">Trigger</th>
+              <th scope="col">Runtime</th>
               <th scope="col">Created At</th>
               <th scope="col" class="text-center">Actions</th>
           </tr>
@@ -35,6 +36,7 @@
               </a>
             </td>
             <td><?php echo $value["trigger"]; ?></td>
+            <td><?php echo $value["runtime"]; ?></td>
             <td><?php echo $value["created_at"]; ?></td>
             <td class="text-center">
               <a href="index.php?action=func&id=<?php echo $value["id"]; ?>" title="Edit">

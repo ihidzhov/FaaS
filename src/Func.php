@@ -3,12 +3,11 @@
 namespace Ihidzhov\FaaS;
 
 use Ihidzhov\FaaS\Trigger;
+use Ihidzhov\FaaS\Runtime;
 
 class Func {
 
-    public function __construct(protected $db = null) {
-        
-    }
+    public function __construct(protected $db = null) { }
  
     public function getAll() {
         $result = $this->db->query('SELECT * FROM fn');
@@ -30,17 +29,18 @@ class Func {
     }
 
     public function getCodeSnippet(array $fn) :string {
-        return file_get_contents(FUNCTIONS_DIR . $fn["hash"].".php");
+        return file_get_contents(FUNCTIONS_DIR . $fn["hash"] . DIRECTORY_SEPARATOR . "index." .Runtime::FILE_EXT[$fn["runtime"]]);
     }
 
-    public function insert($hash, $functionName, $triggerType, $triggerDetails = []) {
-        $sql = 'INSERT INTO fn (name, hash, trigger_type, trigger_details, created_at) 
-                    VALUES (:name, :hash, :trigger_type, :trigger_details, :created_at )';
+    public function insert(string $hash, string $functionName, int $triggerType, string $triggerDetails, int $runtime) :int {
+        $sql = 'INSERT INTO fn (name, hash, trigger_type, trigger_details,runtime, created_at) 
+                    VALUES (:name, :hash, :trigger_type, :trigger_details, :runtime, :created_at )';
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':name', $functionName, SQLITE3_TEXT);
         $stmt->bindValue(':hash', $hash, SQLITE3_TEXT);
         $stmt->bindValue(':trigger_type', $triggerType, SQLITE3_INTEGER);
         $stmt->bindValue(':trigger_details', json_encode($triggerDetails), SQLITE3_TEXT);
+        $stmt->bindValue(':runtime', $runtime, SQLITE3_INTEGER);
         $stmt->bindValue(':created_at', date("Y-m-d H:i:s"), SQLITE3_TEXT);
 
         $result = $stmt->execute();
@@ -65,22 +65,24 @@ class Func {
         $stmt->bindValue(':id', (int)$id, SQLITE3_INTEGER);
         return $stmt->execute();
     }
-
+    
     public function generateHash($functionName) {
         return md5($functionName . time());
     }
 
-    public function generateFileName($hash, $ext = "php") {
-        return $hash . "." . $ext;
+    public function saveToFileSystem($hash, $runtime, $content) {
+        if (!is_dir(FUNCTIONS_DIR . $hash)) {
+            mkdir(FUNCTIONS_DIR . $hash, 0777, true); // TO DO - change permissions
+        }
+        file_put_contents(FUNCTIONS_DIR . $hash . DIRECTORY_SEPARATOR . "index." . Runtime::toFileExt($runtime), $content);
     }
 
-    public function saveToFile($name, $content) {
-        file_put_contents(FUNCTIONS_DIR.$name, $content);
-    }
+    public function removeFiles($folder) {
+        if (is_dir(FUNCTIONS_DIR . $folder)) {
 
-    public function removeFiles($filename) {
-        if (file_exists(FUNCTIONS_DIR.$filename)) {
-            unlink(FUNCTIONS_DIR.$filename);
+            array_map('unlink', glob(FUNCTIONS_DIR."$folder/*.*"));
+
+            rmdir(FUNCTIONS_DIR . $folder);
         }
     }
 

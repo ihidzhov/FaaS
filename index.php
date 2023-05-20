@@ -7,6 +7,7 @@ use Ihidzhov\FaaS\Trigger;
 use Ihidzhov\FaaS\Log;
 use Ihidzhov\FaaS\DB;
 use Ihidzhov\FaaS\Request;
+use Ihidzhov\FaaS\Runtime;
 
 define("ROOT_DIR", dirname(__FILE__));
 require_once __DIR__ . '/src/constants.php';
@@ -36,7 +37,8 @@ $app->get("func", function() use($page, $functions) {
         "triggers" => ["http" => Trigger::TRIGGER_HTTP, "time" => Trigger::TRIGGER_TIME],
         "id" => $id,
         "fn" => $fn,
-        "host" => $functions->getHTTPHost()
+        "host" => $functions->getHTTPHost(),
+        "runtime" => ["list"=>Runtime::RT_ARRAY, "php" => Runtime::RT_PHP, "node" => Runtime::RT_NODE]
     ]);
 });
 $app->get("logs", function() use($page) {
@@ -49,7 +51,7 @@ $app->get("docs", function() use($page) {
 // API 
 
 $app->get("api-function-code", function() use($functions) {
-    $fn = $functions->get($_GET["id"]);
+    $fn = $functions->get((int)$_GET["id"]);
     $snippet = $functions->getCodeSnippet($fn); 
     echo json_encode(["snippet" => $snippet]);
 });
@@ -63,9 +65,10 @@ $app->post("api-save-func", function() use($functions) {
     $functionName = $_REQUEST["functionName"] ?? false;
     $triggerType = $_REQUEST["trigger"] ?? false;
     $triggerDetails = $_REQUEST["triggerDetails"] ?? "";
+    $runtime = $_REQUEST["runtime"] ?? "";
     $id = $_REQUEST['id'] ?? false;
     
-    if (!$code || !$functionName || !$triggerType) {
+    if (!$code || !$functionName || !$triggerType || !$runtime) {
         echo json_encode(["status"=>"error","message"=>"Wrong request data"]);
         exit;
     }
@@ -74,15 +77,15 @@ $app->post("api-save-func", function() use($functions) {
         if ($functions->update($id, $triggerType, $triggerDetails)) {
             $fn = $functions->get($id);
             if ($fn) {
-                $functions->saveToFile($functions->generateFileName($fn["hash"]), $code);
+                $functions->saveToFileSystem($fn["hash"], $runtime, $code);
                 $response = ["status"=>"success","data"=>$fn];
             }
         }
     } else {
         $hash = $functions->generateHash($functionName);
-        $id = $functions->insert($hash, $functionName, $triggerType, $triggerDetails);
+        $id = $functions->insert($hash, $functionName, $triggerType, $triggerDetails, $runtime);
         if ($id) {
-            $functions->saveToFile($functions->generateFileName($hash), $code);
+            $functions->saveToFileSystem($hash, $runtime, $code);
             $response = ["status"=>"success","data"=>["id"=>$id]];
         } else {
             $response = ["status"=>"error","message"=>"DB Error"];
@@ -101,7 +104,7 @@ $app->delete("api-delete-func", function() use($functions) {
     $fn = $functions->get($id);
     if ($fn) {
         if ($functions->delete($id)) {
-            $functions->removeFiles($functions->generateFileName($fn["hash"]));
+            $functions->removeFiles($fn["hash"]);
             $response = ["status"=>"success","data"=>$fn];
         }
     } else {

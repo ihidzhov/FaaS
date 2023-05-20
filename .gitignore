@@ -2,5 +2,5 @@
 /database/lambda.db 
 /database/logs.db
 test.php
-/fn/*.php
+/fn/*/
 /assets/*
