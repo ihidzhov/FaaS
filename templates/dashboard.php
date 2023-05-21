@@ -16,20 +16,7 @@
       </div>
     </div>
   </div>
-  <div class="card" style="width: 18rem; margin-right: 12px;"> 
-    <div class="card-body">
-      <h4 class="card-title text-center"><?php echo $php_count; ?></h4>
-      <p class="card-text text-center">Number of all PHP functions</p>
-      <h4 class="text-center">PHP</h4>
-    </div>
-  </div>
-  <div class="card" style="width: 18rem;"> 
-    <div class="card-body">
-      <h4 class="card-title text-center"><?php echo $node_count; ?></h4>
-      <p class="card-text text-center">Number of all functions</p>
-      <h4 class="text-center">NODE</h4>
-    </div>
-  </div>
+   
 
 </div>
 

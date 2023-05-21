@@ -27,12 +27,12 @@ class Func {
         return $result->fetchArray(\SQLITE3_ASSOC);
     }
 
-    public function getByHash(string $hash = null) {
-        if (!$hash) {
+    public function getByName(string $str = null) {
+        if (!$str) {
             return false;
         }
-        $stmt = $this->db->prepare('SELECT * FROM fn WHERE hash = :hash');
-        $stmt->bindValue(':hash', $hash, SQLITE3_TEXT);
+        $stmt = $this->db->prepare('SELECT * FROM fn WHERE name = :str');
+        $stmt->bindValue(':str', $str, SQLITE3_TEXT);
         $result = $stmt->execute();
         return $result->fetchArray(\SQLITE3_ASSOC);
     }
@@ -110,15 +110,24 @@ class Func {
         return $result->fetchArray(\SQLITE3_ASSOC)["cnt"];
     }
 
-    public function getMany($limit = 5, $order = "DESC") :array {
-        $result = $this->db->query("SELECT * FROM fn ORDER BY id {$order} LIMIT {$limit} ");
+    public function getMany($offset = 0, $limit = 10, $search = false, $order = "DESC") :array {
+        $where = "";
+        if ($search) {
+            $where = " WHERE name LIKE '%" . $search ."%' ";
+        }
+        $result = $this->db->query("SELECT * FROM fn {$where} ORDER BY id {$order} LIMIT {$limit} ");
         $data = [];
         while($row = $result->fetchArray(\SQLITE3_ASSOC)) {
+            $row["trigger_name"] = Trigger::AS_ARRAY[$row["trigger_type"]];  
+            $row["link"] = '<a href="index.php?action=func&id='.$row["id"].'">'.$row["name"].'</a>'; 
             $data[] = $row;
         }
-        return $data;
-    }
+        $countResult = $this->db->query("SELECT COUNT(id) AS cnt FROM fn {$where}");
+        $count = $countResult->fetchArray(\SQLITE3_ASSOC)["cnt"];
 
+        return ["rows"=>$data, "total"=>$count, "totalNotFiltered" => $count];
+    }
+    
     public function getList($limit = 5, $order = "DESC") :array {
         $result = $this->db->query("SELECT * FROM fn ORDER BY id {$order} LIMIT {$limit} ");
         $data = [];

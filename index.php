@@ -22,11 +22,9 @@ $functions = new Func($dbLambda);
 
 $app->get(["dashboard",null], function() use($page, $functions, $dbLogs) {
     $count = $functions->getCount();
-    $latest = $functions->getMany();
+    $latest = $functions->getMany(5)["rows"];
     $page->display("dashboard",[
         "count" => $count, 
-        "php_count" => $php, 
-        "node_count" => $node,
         "latest" => $functions->prepareForListing($latest),
         "last_executed_functions" => Log::getMany($dbLogs, 0, 5)
     ]);
@@ -67,11 +65,12 @@ $app->get("api-function-code", function() use($functions) {
     echo json_encode(["snippet" => $snippet]);
 });
 $app->get("api-lambdas-table", function() use($functions) {
-     
-    $data = $functions->getMany();
-    for($i = 0; $i < 30; $i ++) {
-        $data[] = $data[1];
-    }
+    $offset = $_REQUEST["offset"] ?? 0;
+    $limit = $_REQUEST["limit"] ?? 10;
+    $search = $_REQUEST["search"] ?? "";
+    
+    $data = $functions->getMany($offset, $limit, $search);
+ 
     echo json_encode($data);exit;
 });
 $app->post("api-save-func", function() use($functions) {

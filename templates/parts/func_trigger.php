@@ -45,7 +45,7 @@
 <div class="padding-12">
   <div id="trigger-http" class="trigger-radio <?php if ($id && is_array($fn) && isset($fn["trigger_type"]) && $fn["trigger_type"] == $triggers['http']) { echo "show";} ?>" >
   <?php if ($id) : ?>  
-    URL: <a target="_blank" href="<?php echo $host . "lambda.php?name=" . $fn["hash"]; ?>"><?php echo $host; ?>lambda.php?name=<?php echo $fn["hash"]; ?></a>
+    URL: <a target="_blank" href="<?php echo $host . "http.php?name=" . $fn["name"]; ?>"><?php echo $host; ?>http.php?name=<?php echo $fn["name"]; ?></a>
   <?php endif; ?>
   </div>
   <div id="trigger-time" class="trigger-radio <?php if ($id && isset($fn["trigger_type"]) && $fn["trigger_type"] == $triggers['time']) { echo "show";} ?>" >
