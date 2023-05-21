@@ -9,7 +9,7 @@
 <div class="wrapper">
   <h3>Function</h3>
   
-  <?php include_once("parts/func_trigger_runtime.php"); ?>
+  <?php include_once("parts/func_trigger.php"); ?>
 
   <br />
 

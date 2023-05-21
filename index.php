@@ -7,7 +7,6 @@ use Ihidzhov\FaaS\Trigger;
 use Ihidzhov\FaaS\Log;
 use Ihidzhov\FaaS\DB;
 use Ihidzhov\FaaS\Request;
-use Ihidzhov\FaaS\Runtime;
 
 define("ROOT_DIR", dirname(__FILE__));
 require_once __DIR__ . '/src/constants.php';
@@ -15,21 +14,21 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $app = new App();
 $dbLambda = new DB(DB::SCHEMA_LAMBDA);
+$dbLogs = new DB(DB::SCHEMA_LOGS);
 $page = new Page();
 $functions = new Func($dbLambda);
 
 // Web pages
 
-$app->get(["dashboard",null], function() use($page, $functions) {
+$app->get(["dashboard",null], function() use($page, $functions, $dbLogs) {
     $count = $functions->getCount();
-    $php = $functions->getCountByRuntime(Runtime::RT_PHP);
-    $node = $functions->getCountByRuntime(Runtime::RT_NODE);
     $latest = $functions->getMany();
     $page->display("dashboard",[
         "count" => $count, 
         "php_count" => $php, 
         "node_count" => $node,
-        "latest" => $functions->prepareForListing($latest)
+        "latest" => $functions->prepareForListing($latest),
+        "last_executed_functions" => Log::getMany($dbLogs, 0, 5)
     ]);
 });
 $app->get("funcs", function() use($page, $functions) {
@@ -47,11 +46,14 @@ $app->get("func", function() use($page, $functions) {
         "id" => $id,
         "fn" => $fn,
         "host" => $functions->getHTTPHost(),
-        "runtime" => ["list"=>Runtime::RT_ARRAY, "php" => Runtime::RT_PHP, "node" => Runtime::RT_NODE]
     ]);
 });
-$app->get("logs", function() use($page) {
-    $page->display("logs");
+$app->get("logs", function() use($page, $dbLogs ) {
+    $lambdaLogs = Log::getMany($dbLogs);
+    $page->display("logs", ["lambda_logs" => $lambdaLogs]);
+});
+$app->get("configs", function() use($page) {
+    $page->display("configs");
 });
 $app->get("docs", function() use($page) {
     $page->display("docs");
@@ -64,8 +66,12 @@ $app->get("api-function-code", function() use($functions) {
     $snippet = $functions->getCodeSnippet($fn); 
     echo json_encode(["snippet" => $snippet]);
 });
-$app->get("api-lambdas-xxx", function() use($functions) {
-    $data = $functions->getAll();
+$app->get("api-lambdas-table", function() use($functions) {
+     
+    $data = $functions->getMany();
+    for($i = 0; $i < 30; $i ++) {
+        $data[] = $data[1];
+    }
     echo json_encode($data);exit;
 });
 $app->post("api-save-func", function() use($functions) {
@@ -74,10 +80,9 @@ $app->post("api-save-func", function() use($functions) {
     $functionName = $_REQUEST["functionName"] ?? false;
     $triggerType = $_REQUEST["trigger"] ?? false;
     $triggerDetails = $_REQUEST["triggerDetails"] ?? "";
-    $runtime = $_REQUEST["runtime"] ?? "";
     $id = $_REQUEST['id'] ?? false;
     
-    if (!$code || !$functionName || !$triggerType || !$runtime) {
+    if (!$code || !$functionName || !$triggerType) {
         echo json_encode(["status"=>"error","message"=>"Wrong request data"]);
         exit;
     }
@@ -86,15 +91,15 @@ $app->post("api-save-func", function() use($functions) {
         if ($functions->update($id, $triggerType, $triggerDetails)) {
             $fn = $functions->get($id);
             if ($fn) {
-                $functions->saveToFileSystem($fn["hash"], $runtime, $code);
+                $functions->saveToFileSystem($fn["hash"], $code);
                 $response = ["status"=>"success","data"=>$fn];
             }
         }
     } else {
         $hash = $functions->generateHash($functionName);
-        $id = $functions->insert($hash, $functionName, $triggerType, $triggerDetails, $runtime);
+        $id = $functions->insert($hash, $functionName, $triggerType, $triggerDetails);
         if ($id) {
-            $functions->saveToFileSystem($hash, $runtime, $code);
+            $functions->saveToFileSystem($hash, $code);
             $response = ["status"=>"success","data"=>["id"=>$id]];
         } else {
             $response = ["status"=>"error","message"=>"DB Error"];

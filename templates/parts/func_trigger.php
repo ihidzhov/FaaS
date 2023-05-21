@@ -3,7 +3,7 @@
   <div class="col-sm-6">
     <div class="padding-12">
       <label class="form-check-label" for="flexSwitchCheckChecked">
-        <span class="badge rounded-pill bg-warning no-radius">Trigger</span>
+        <span class="badge rounded-pill bg-info no-radius">Trigger</span>
       </label>
     </div>
     <div class="form-check form-check-inline">
@@ -38,56 +38,7 @@
     </div>
     
   </div>
-
-
-
-
-
-
-
-
-
-  <div class="col-sm-6">
-    <div class="padding-12">
-      <label class="form-check-label" for="flexSwitchCheckChecked">
-        <span class="badge rounded-pill bg-info no-radius">Runtime</span>
-      </label>
-    </div>
-    <div class="form-check form-check-inline">
-      <input 
-        class="form-check-input" 
-        type="radio" 
-        name="runtime" 
-        id="inlineRadio11" 
-        value="<?php echo $runtime['php'];?>"
-        <?php if (!$id) : ?>
-          checked
-        <?php elseif($fn["runtime"] == $runtime['php']) : ?>
-          checked
-        <?php endif; ?>
-        onchange="FaaS.runtime.onChange(<?php echo $runtime['php']; ?>)"
-        <?php if($id) : ?> disabled <?php endif; ?>
-      >
-      <label class="form-check-label" for="inlineRadio11"><?php echo $runtime["list"][$runtime["php"]]; ?></label>
-    </div>
-    <div class="form-check form-check-inline">
-      <input 
-        class="form-check-input" 
-        type="radio" 
-        name="runtime" 
-        id="inlineRadio21" 
-        value="<?php echo $runtime['node'];?>"
-        <?php if (isset($fn["runtime"]) && $fn["runtime"] == $runtime['node']) : ?>
-          checked
-        <?php endif; ?>
-        onchange="FaaS.runtime.onChange(<?php echo $runtime['node']; ?>)"
-        <?php if($id) : ?> disabled <?php endif; ?>
-      >
-      <label class="form-check-label" for="inlineRadio21"><?php echo $runtime["list"][$runtime["node"]]; ?></label>
-    </div>
-  </div>
-  
-</div>
+</div> 
 
 <div class="clear"></div>
 

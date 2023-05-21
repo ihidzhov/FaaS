@@ -5,13 +5,13 @@ use Ihidzhov\FaaS\Config;
 use Ihidzhov\FaaS\Func;
 use Ihidzhov\FaaS\Log;
 use Ihidzhov\FaaS\DB;
-use Ihidzhov\FaaS\Runtime;
 
 define("ROOT_DIR", dirname(__FILE__));
 require_once __DIR__ . '/src/constants.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
 $dbLambda = new DB(DB::SCHEMA_LAMBDA);
+$dbLogs = new DB(DB::SCHEMA_LOGS);
 $functions = new Func($dbLambda);
 
 if (!isset($_REQUEST["name"])) {
@@ -21,16 +21,18 @@ if (!isset($_REQUEST["name"])) {
 
 $data = $functions->getByHash($_REQUEST["name"]);
 if ($data) {
-    $file = FUNCTIONS_DIR . $data["hash"] . DIRECTORY_SEPARATOR . "index." . Runtime::FILE_EXT[$data["runtime"]];
-    if ($data["runtime"] == Runtime::RT_PHP) {
-        if (file_exists($file)) {
-            require_once($file);
-            if (function_exists($data["name"])) {
+    $file = FUNCTIONS_DIR . $data["hash"] . DIRECTORY_SEPARATOR . "index.php";
+    if (file_exists($file)) {
+        require_once($file);
+        if (function_exists($data["name"])) {
+            try {
                 $data["name"]();
+            }   catch(Throwable $t) {
+                Log::toLambda($dbLogs, Log::LEVEL_ERROR, $data["name"], $t->getMessage());
+            } finally  {
+                Log::toLambda($dbLogs, Log::LEVEL_INFO, $data["name"]);
             }
         }
-    } elseif ($data["runtime"] == Runtime::RT_NODE) {
-
     }
 } else {
     print("Error: Function Not Found");

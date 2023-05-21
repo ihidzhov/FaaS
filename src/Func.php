@@ -3,7 +3,6 @@
 namespace Ihidzhov\FaaS;
 
 use Ihidzhov\FaaS\Trigger;
-use Ihidzhov\FaaS\Runtime;
 
 class Func {
 
@@ -39,18 +38,17 @@ class Func {
     }
 
     public function getCodeSnippet(array $fn) :string {
-        return file_get_contents(FUNCTIONS_DIR . $fn["hash"] . DIRECTORY_SEPARATOR . "index." .Runtime::FILE_EXT[$fn["runtime"]]);
+        return file_get_contents(FUNCTIONS_DIR . $fn["hash"] . DIRECTORY_SEPARATOR . "index.php");
     }
 
-    public function insert(string $hash, string $functionName, int $triggerType, string $triggerDetails, int $runtime) :int {
-        $sql = 'INSERT INTO fn (name, hash, trigger_type, trigger_details,runtime, created_at) 
-                    VALUES (:name, :hash, :trigger_type, :trigger_details, :runtime, :created_at )';
+    public function insert(string $hash, string $functionName, int $triggerType, string $triggerDetails) :int {
+        $sql = 'INSERT INTO fn (name, hash, trigger_type, trigger_details, created_at) 
+                    VALUES (:name, :hash, :trigger_type, :trigger_details, :created_at )';
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':name', $functionName, SQLITE3_TEXT);
         $stmt->bindValue(':hash', $hash, SQLITE3_TEXT);
         $stmt->bindValue(':trigger_type', $triggerType, SQLITE3_INTEGER);
         $stmt->bindValue(':trigger_details', json_encode($triggerDetails), SQLITE3_TEXT);
-        $stmt->bindValue(':runtime', $runtime, SQLITE3_INTEGER);
         $stmt->bindValue(':created_at', date("Y-m-d H:i:s"), SQLITE3_TEXT);
 
         $result = $stmt->execute();
@@ -80,11 +78,11 @@ class Func {
         return md5($functionName . time());
     }
 
-    public function saveToFileSystem($hash, $runtime, $content) {
+    public function saveToFileSystem($hash, $content) {
         if (!is_dir(FUNCTIONS_DIR . $hash)) {
             mkdir(FUNCTIONS_DIR . $hash, 0777, true); // TO DO - change permissions
         }
-        file_put_contents(FUNCTIONS_DIR . $hash . DIRECTORY_SEPARATOR . "index." . Runtime::toFileExt($runtime), $content);
+        file_put_contents(FUNCTIONS_DIR . $hash . DIRECTORY_SEPARATOR . "index.php", $content);
     }
 
     public function removeFiles($folder) {
@@ -102,7 +100,6 @@ class Func {
     public function prepareForListing($fns) {
         foreach($fns as $key => $fn) {
             $fns[$key]["trigger"] = Trigger::AS_ARRAY[$fn["trigger_type"]];  
-            $fns[$key]["runtime_name"] = Runtime::RT_ARRAY[$fn["runtime"]];  
         }
         return $fns;
     }
@@ -113,17 +110,16 @@ class Func {
         return $result->fetchArray(\SQLITE3_ASSOC)["cnt"];
     }
 
-    public function getCountByRuntime(int $runtime) :int {
-        if (!$runtime) {
-            return false;
+    public function getMany($limit = 5, $order = "DESC") :array {
+        $result = $this->db->query("SELECT * FROM fn ORDER BY id {$order} LIMIT {$limit} ");
+        $data = [];
+        while($row = $result->fetchArray(\SQLITE3_ASSOC)) {
+            $data[] = $row;
         }
-        $stmt = $this->db->prepare('SELECT COUNT(id) AS cnt FROM fn WHERE runtime = :runtime'); 
-        $stmt->bindValue(':runtime', $runtime, SQLITE3_INTEGER);
-        $result = $stmt->execute();
-        return $result->fetchArray(\SQLITE3_ASSOC)["cnt"];
+        return $data;
     }
 
-    public function getMany($limit = 5, $order = "DESC") :array {
+    public function getList($limit = 5, $order = "DESC") :array {
         $result = $this->db->query("SELECT * FROM fn ORDER BY id {$order} LIMIT {$limit} ");
         $data = [];
         while($row = $result->fetchArray(\SQLITE3_ASSOC)) {

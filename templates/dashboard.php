@@ -43,7 +43,6 @@
       <tr>
         <th scope="col">Name</th>
         <th scope="col">Trigger</th>
-        <th scope="col">Runtime</th>
         <th scope="col">Created At</th>
       </tr>
     </thead>
@@ -56,12 +55,35 @@
               </a>
             </td>
             <td><?php echo $value["trigger"]; ?></td>
-            <td><?php echo $value["runtime_name"]; ?></td>
             <td><?php echo $value["created_at"]; ?></td>
           </tr>
         <?php } ?>
       </tbody>
   </table>
 </div>
+
+<br />
+<div>
+  <h5>Latest Executed Functions</h5>
+  <table id="example" class="table caption-top">
+    <thead>
+      <tr>
+        <th scope="col">Level</th>
+        <th scope="col">Name</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+      <tbody>
+        <?php foreach($last_executed_functions as $value) { ?>
+          <tr>
+            <td><?php echo $value["level_name"]; ?></td>
+            <td><?php echo $value["name"]; ?></td>
+            <td><?php echo $value["created_at"]; ?></td>
+          </tr>
+        <?php } ?>
+      </tbody>
+  </table>
+</div>
+
 
 <?php include_once("footer.php"); ?>

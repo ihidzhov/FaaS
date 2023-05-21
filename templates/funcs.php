@@ -1,5 +1,6 @@
 <?php include_once("header.php"); ?>
 
+
 <h2>Functions</h2>
 
 <br />
@@ -13,6 +14,36 @@
     Create new Function
   </a>
 </p>
+https://examples.bootstrap-table.com/#options/table-ajax.html#view-source
+<table
+  id="table"
+  data-toggle="table"
+  data-height="460"
+  data-ajax="ajaxRequest"
+  data-search="true"
+  data-side-pagination="server"
+  data-pagination="true">
+  <thead>
+    <tr>
+      <th scope="col" data-field="id">ID</th>
+      <th scope="col" data-field="name">Name</th>
+      <th scope="col" data-field="id">Trigger</th>
+      <th scope="col" data-field="id">Created At</th>
+      <th scope="col" class="text-center" data-field="id">Actions</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  // your custom ajax request here
+  function ajaxRequest(params) {
+    console.log(params)
+    FaaS.getList(params);
+    // $.get(url + '?' + $.param(params.data)).then(function (res) {
+    //   params.success(res)
+    // })
+  }
+</script>
 
 <div class="container"  >
   <table id="example" class="table caption-top">
@@ -21,7 +52,6 @@
               <th scope="col">ID</th>
               <th scope="col">Name</th>
               <th scope="col">Trigger</th>
-              <th scope="col">Runtime</th>
               <th scope="col">Created At</th>
               <th scope="col" class="text-center">Actions</th>
           </tr>
@@ -36,7 +66,6 @@
               </a>
             </td>
             <td><?php echo $value["trigger"]; ?></td>
-            <td><?php echo $value["runtime"]; ?></td>
             <td><?php echo $value["created_at"]; ?></td>
             <td class="text-center">
               <a href="index.php?action=func&id=<?php echo $value["id"]; ?>" title="Edit">
