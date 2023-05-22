@@ -7,6 +7,7 @@ use Ihidzhov\FaaS\Trigger;
 use Ihidzhov\FaaS\Log;
 use Ihidzhov\FaaS\DB;
 use Ihidzhov\FaaS\Request;
+use Ihidzhov\FaaS\Response;
 
 define("ROOT_DIR", dirname(__FILE__));
 
@@ -18,6 +19,7 @@ $dbLambda = new DB(DB::SCHEMA_LAMBDA);
 $dbLogs = new DB(DB::SCHEMA_LOGS);
 $page = new Page();
 $functions = new Func($dbLambda);
+$config = new Config($dbLambda);
 
 // Web pages
 
@@ -51,8 +53,8 @@ $app->get("logs", function() use($page, $dbLogs ) {
     $lambdaLogs = Log::getMany($dbLogs);
     $page->display("logs", ["lambda_logs" => $lambdaLogs]);
 });
-$app->get("configs", function() use($page) {
-    $page->display("configs");
+$app->get("config", function() use($page) {
+    $page->display("config");
 });
 $app->get("docs", function() use($page) {
     $page->display("docs");
@@ -69,9 +71,7 @@ $app->get("api-lambdas-table", function() use($functions) {
     $offset = $_REQUEST["offset"] ?? 0;
     $limit = $_REQUEST["limit"] ?? 10;
     $search = $_REQUEST["search"] ?? "";
-    
     $data = $functions->getMany($offset, $limit, $search);
- 
     echo json_encode($data);exit;
 });
 $app->post("api-save-func", function() use($functions) {
@@ -126,6 +126,21 @@ $app->delete("api-delete-func", function() use($functions) {
     }
     echo json_encode($response);
     exit;
+});
+$app->put("api-update-config", function() use($config) {
+    $response = ["status"=>"error","message"=>"Error! There is something wrong"];
+    if ($config->update(Config::FUNCTIONS_KEY, trim(Request::getRawInput()))) {
+        $response = ["status"=>"success","message"=>"Config was updated successfully"];
+    }
+    Response::sentJSON($response);
+});
+$app->get("api-config-code", function() use($config) {
+    $cf = $config->get(Config::FUNCTIONS_KEY);
+    $response = ["status"=>"error","message"=>"Error! There is something wrong"];
+    if (is_array($cf) && isset($cf["val"])) {
+        $response = ["status"=>"success","data"=>$cf["val"]];
+    }
+    Response::sentJSON($response);
 });
 
 $app->run();

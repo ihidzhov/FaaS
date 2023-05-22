@@ -25,7 +25,7 @@
           <li><a href="index.php?action=dashboard">Dashboard</a></li>
           <li><a href="index.php?action=funcs">Functions</a></li>
           <li><a href="index.php?action=logs">Logs</a></li>
-          <li><a href="index.php?action=configs">Configs</a></li>
+          <li><a href="index.php?action=config">Config</a></li>
           <li><a href="index.php?action=settings">User settings</a></li>
           <li><a href="index.php?action=docs">Docs</a></li>
         </ul>

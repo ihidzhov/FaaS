@@ -29,6 +29,16 @@ $sql = 'CREATE TABLE IF NOT EXISTS fn (
 )';
 $dbLambda->exec($sql);
 
+
+$sql = 'CREATE table IF NOT EXISTS config (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    name VARCHAR(255) UNIQUE, 
+    val TEXT, 
+    edited_at TEXT NOT NULL
+)';
+$dbLambda->exec($sql);
+
+
 $sql = 'DROP TABLE lambda';
 $dbLogs->exec($sql);
 

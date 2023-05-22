@@ -25,8 +25,12 @@ class Request {
         $_SERVER['REQUEST_METHOD'] == self::METHOD_DELETE;
     }
 
+    public static function getRawInput() {
+        return file_get_contents("php://input");
+	}
+
     public static function parseInput() {
-        $data = file_get_contents("php://input");
+        $data = self::getRawInput();
 		if($data == false)
 			return array();
 
@@ -34,5 +38,11 @@ class Request {
 
 		return $result;
 	}
+
+    public static function sentJSON($data) {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($data);
+        exit;
+    }
 
 }

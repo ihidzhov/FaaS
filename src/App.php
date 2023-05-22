@@ -26,6 +26,10 @@ class App {
     public function delete(array|string $path, $cb) :void {
         $this->get($path, $cb);
     }
+    
+    public function put(array|string $path, $cb) :void {
+        $this->get($path, $cb);
+    }
 
     public function run() {
         $r = isset($_REQUEST['action']) ? trim(mb_strtolower($_REQUEST['action'])) : null;
