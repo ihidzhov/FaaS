@@ -7,8 +7,7 @@ use Ihidzhov\FaaS\Log;
 use Ihidzhov\FaaS\DB;
 
 define("ROOT_DIR", dirname(__FILE__));
-require_once __DIR__ . '/src/constants.php';
-require_once __DIR__ . '/vendor/autoload.php';
+require_once './bootstrap.php';
 
 $dbLambda = new DB(DB::SCHEMA_LAMBDA);
 $dbLogs = new DB(DB::SCHEMA_LOGS);

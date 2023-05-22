@@ -9,8 +9,9 @@ use Ihidzhov\FaaS\DB;
 use Ihidzhov\FaaS\Request;
 
 define("ROOT_DIR", dirname(__FILE__));
-require_once __DIR__ . '/src/constants.php';
-require_once __DIR__ . '/vendor/autoload.php';
+
+require_once './bootstrap.php';
+
 
 $app = new App();
 $dbLambda = new DB(DB::SCHEMA_LAMBDA);
