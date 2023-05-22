@@ -20,17 +20,19 @@ if (!isset($_REQUEST["name"])) {
 
 $data = $functions->getByName($_REQUEST["name"]);
 if ($data) {
+    define("FUNCTION_NAME", $data["name"]);
     $file = FUNCTIONS_DIR . $data["hash"] . DIRECTORY_SEPARATOR . "index.php";
     if (file_exists($file)) {
         try {
             require_once($file);
-            if (function_exists($data["name"])) {
-                $data["name"]();
+            if (function_exists(FUNCTION_NAME)) {
+                $functionName = FUNCTION_NAME;
+                $functionName();
             }
         }   catch(Throwable $t) {
-            Log::toLambda($dbLogs, Log::LEVEL_ERROR, $data["name"], $t->getMessage());
+            Log::toLambda($dbLogs, Log::LEVEL_ERROR, FUNCTION_NAME, $t->getMessage());
         } finally  {
-            Log::toLambda($dbLogs, Log::LEVEL_INFO, $data["name"]);
+            Log::toLambda($dbLogs, Log::LEVEL_INFO, FUNCTION_NAME);
         }
     }
 } else {

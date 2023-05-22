@@ -16,31 +16,11 @@
   </div>
  
   <div class="padding-12">
-    <label class="form-check-label" for="flexSwitchCheckChecked">Config - JSON format</label>
+    <label class="form-check-label" for="flexSwitchCheckChecked">JSON format</label>
   </div>
 
-<div id="editor">{
-  "db":{
-    "host": "localhost",
-    "port": 3306,
-    "user": "user",
-    "password": "password"
-  }
-  
-}
-</div>
+<div id="editor"> </div>
    
-<script>
- 
-  /*
-  cobalt
-  eclipse
-monokai
-solarized_dark
-  
-  */
-</script>
-
 <script src="./assets/ace-builds-1.5-2.0/src/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
