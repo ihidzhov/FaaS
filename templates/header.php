@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Lambda - <?php echo isset($title) ? $title : ""; ?></title>
-    <link rel="stylesheet" type="text/css" href="./assets/bootstrap.min-2.css">
+    <link rel="stylesheet" type="text/css" href="./assets/bootstrap.min-6.css">
     <link rel="stylesheet" href="./assets/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>

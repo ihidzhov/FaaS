@@ -57,15 +57,23 @@
   <?php if ((int)$id > 0) {
     echo "functionID = " . $id;
   } ?>
+
+  /*
+  cobalt
+  eclipse
+monokai
+solarized_dark
+  
+  */
 </script>
 
 <script src="./assets/ace-builds-1.5-2.0/src/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
 </script>
-<script src="./assets/ace-builds-1.5-2.0/src/theme-chrome.js" type="text/javascript" charset="utf-8"></script>
+<script src="./assets/ace-builds-1.5-2.0/src/theme-xcode.js" type="text/javascript" charset="utf-8"></script>
 <script>
-  editor.setTheme("ace/theme/chrome");
+  editor.setTheme("ace/theme/xcode");
 </script>
 <script src="./assets/ace-builds-1.5-2.0/src/mode-php.js" type="text/javascript" charset="utf-8"></script>
 <script>
