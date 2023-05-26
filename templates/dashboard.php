@@ -57,7 +57,7 @@
       </tr>
     </thead>
       <tbody>
-        <?php foreach($last_executed_functions as $value) { ?>
+        <?php foreach($last_executed_functions["rows"] as $value) { ?>
           <tr>
             <td><?php echo $value["level_name"]; ?></td>
             <td><?php echo $value["name"]; ?></td>
