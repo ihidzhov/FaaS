@@ -1,29 +1,35 @@
 <?php include_once("header.php"); ?>
  
 <div>
-  <h5>Functions</h5>
-  <table id="example" class="table caption-top">
+  <br /> <br /> <br />
+  <h5>Functions executions</h5>
+
+  <table
+    id="table"
+    data-toggle="table"
+    data-height="460"
+    data-ajax="ajaxRequest"
+    data-search="true"
+    data-pagination="true"
+    data-side-pagination="server"
+    data-pagination="true"
+    >
     <thead>
       <tr>
-        <th scope="col">Level</th>
-        <th scope="col">Name</th>
-        <th scope="col">Message</th>
-        <th scope="col">Date</th>
+        <th scope="col" data-field="level_name">Level</th>
+        <th scope="col" data-field="name">Name</th>
+        <th scope="col" data-field="message">Message</th>
+        <th scope="col" data-field="created_at">Date</th>
       </tr>
     </thead>
-      <tbody>
-        <?php foreach($lambda_logs as $value) { ?>
-          <tr>
-            <td>
-            <?php echo $value["level_name"]; ?>
-            </td>
-            <td><?php echo $value["name"]; ?></td>
-            <td><?php echo $value["message"]; ?></td>
-            <td><?php echo $value["created_at"]; ?></td>
-          </tr>
-        <?php } ?>
-      </tbody>
   </table>
 </div>
+ 
+<script>
+  // your custom ajax request here
+  function ajaxRequest(params) {
+    FaaS.getLogs(params);
+  }
+</script>
 
 <?php include_once("footer.php"); ?>

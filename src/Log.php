@@ -2,6 +2,8 @@
 
 namespace Ihidzhov\FaaS;
 
+use Throwable;
+
 class Log {
     
     const LEVEL_INFO = 1;
@@ -29,20 +31,26 @@ class Log {
 
     }
 
-    public static function getMany($dbLogs, $start = 0, $results = 100, $order = "DESC") {
+    public static function getMany($dbLogs, int $offset = 0, int $limit = 10, $search = false, string $order = "DESC") {
         try {
-            $stmt = $dbLogs->prepare('SELECT * FROM `lambda` ORDER BY id desc LIMIT :start, :results ');
-            $stmt->bindValue(':ord', $order, SQLITE3_TEXT);
-            $stmt->bindValue(':start', (int) $start, SQLITE3_INTEGER);
-            $stmt->bindValue(':results', (int) $results, SQLITE3_INTEGER);
+            $where = "";
+            if ($search) {
+                $where = " WHERE name LIKE '%" . $search ."%' ";
+            }
+            $stmt = $dbLogs->prepare("SELECT * FROM `lambda` {$where} ORDER BY id {$order} LIMIT :offset, :limit");
+            $stmt->bindValue(':offset', (int) $offset, SQLITE3_INTEGER);
+            $stmt->bindValue(':limit', (int) $limit, SQLITE3_INTEGER);
             $result = $stmt->execute();
             $data = [];
             while($row = $result->fetchArray(\SQLITE3_ASSOC)) {
                 $row["level_name"] = self::LEVEL_NAME[$row["level"]];
                 $data[] = $row;
             }
-            return $data;
-        } catch(Throwable $t) {}
+            $countResult = $dbLogs->query("SELECT COUNT(id) AS cnt FROM `lambda` {$where}");
+            $count = $countResult->fetchArray(\SQLITE3_ASSOC)["cnt"];
+    
+            return ["rows"=>$data, "total"=>$count, "totalNotFiltered" => $count];
+        } catch(Throwable $t) {  }
     }
 
 }

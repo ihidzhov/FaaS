@@ -56,8 +56,7 @@ $app->get("func", function() use($page, $functions) {
     ]);
 });
 $app->get("logs", function() use($page, $dbLogs ) {
-    $lambdaLogs = Log::getMany($dbLogs);
-    $page->display("logs", ["lambda_logs" => $lambdaLogs, "navigation" => 3]);
+    $page->display("logs", ["navigation" => 3]);
 });
 $app->get("config", function() use($page) {
     $page->display("config", ["navigation" => 4]);
@@ -79,6 +78,13 @@ $app->get("api-lambdas-table", function() use($functions) {
     $search = $_REQUEST["search"] ?? "";
     $data = $functions->getMany($offset, $limit, $search);
     echo json_encode($data);exit;
+});
+$app->get("api-logs-table", function() use($dbLogs) {
+    $offset = $_REQUEST["offset"] ?? 0;
+    $limit = $_REQUEST["limit"] ?? 10;
+    $search = $_REQUEST["search"] ?? "";
+    $data = Log::getMany($dbLogs, $offset, $limit, $search);
+    Response::sentJSON($data);
 });
 $app->post("api-save-func", function() use($functions) {
     $code = $_REQUEST["editorContent"] ?? "";

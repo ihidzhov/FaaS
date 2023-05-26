@@ -7,7 +7,7 @@ use Ihidzhov\FaaS\HTML;
 
 class Page {
 
-    public function display($template = null, $vars = []) {
+    public function display(string $template = null, array $vars = []) :never {
         if (!file_exists(TEMPLATES_DIR . $template . '.php')) {
             throw new Exception("Templage \"{$template}.php\" does not exists");
         }
