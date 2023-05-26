@@ -1,7 +1,9 @@
 # Own FaaS
 
-# Introduction
-Own FaaS is self hosted FaaS (Function as a Service)
+## Introduction
+Own FaaS is self hosted FaaS (Function as a Service). It is self hosted alternative to Amazon Lambda, Google Cloud Functions and Azure Functions. Easy to install and run, with web based code editor. 
+Creating, editing, listing and deleting functions.
+Function invocations based on triggers - HTTP and Time.
 
 ## Features
 - Self hosted FaaS
