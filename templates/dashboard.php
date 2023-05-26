@@ -1,9 +1,6 @@
 <?php include_once("header.php"); ?>
-
-<h3>Dashboard</h3>
-
+ 
 <br />
-
 
 <div class="row"> 
 
@@ -16,7 +13,6 @@
       </div>
     </div>
   </div>
-   
 
 </div>
 

@@ -7,8 +7,7 @@
 </style>
 
 <div class="wrapper">
-  <h3>Config</h3>
-
+ 
   <div class="row">
     <div class="col-sm-12 text-right">
       <button type="button" class="btn btn-outline-primary" onclick="FaaS.updateConfig(this);">Save</button>

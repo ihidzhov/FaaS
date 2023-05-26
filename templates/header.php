@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Lambda - <?php echo isset($title) ? $title : ""; ?></title>
+    <title>FaaS - <?php echo isset($title) ? $title : ""; ?></title>
     <link rel="stylesheet" type="text/css" href="./assets/bootstrap.min-6.css">
     <link rel="stylesheet" href="./assets/style.css">
 
@@ -22,11 +22,10 @@
       <h1 class="site-title">FaaS (Lambda / Cloud Functions)</h1>
       <nav>
         <ul>
-          <li><a href="index.php?action=dashboard">Dashboard</a></li>
-          <li><a href="index.php?action=funcs">Functions</a></li>
-          <li><a href="index.php?action=logs">Logs</a></li>
-          <li><a href="index.php?action=config">Config</a></li>
-          <li><a href="index.php?action=settings">User settings</a></li>
-          <li><a href="index.php?action=docs">Docs</a></li>
+          <?php foreach($navigation as $nav) : ?>
+            <li <?php echo isset($nav["active"]) ? "class=\"active\"" : ""; ?>>
+              <a href="index.php?action=<?php echo $nav["slug"];?>"><?php echo $nav["name"];?></a>
+            </li>
+          <?php endforeach; ?>
         </ul>
       </nav>

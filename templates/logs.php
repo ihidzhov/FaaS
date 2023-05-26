@@ -1,7 +1,5 @@
 <?php include_once("header.php"); ?>
-
-<h3>logs</h3>
-
+ 
 <div>
   <h5>Functions</h5>
   <table id="example" class="table caption-top">

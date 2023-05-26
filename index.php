@@ -29,12 +29,17 @@ $app->get(["dashboard",null], function() use($page, $functions, $dbLogs) {
     $page->display("dashboard",[
         "count" => $count, 
         "latest" => $functions->prepareForListing($latest),
-        "last_executed_functions" => Log::getMany($dbLogs, 0, 5)
+        "last_executed_functions" => Log::getMany($dbLogs, 0, 5),
+        "navigation" => 1,
     ]);
 });
 $app->get("funcs", function() use($page, $functions) {
     $data = $functions->prepareForListing($functions->getAll());
-    $page->display("funcs",["title" => "Functions", "data" => $data]);
+    $page->display("funcs",[
+        "title" => "Functions", 
+        "data" => $data,
+        "navigation" => 2,
+    ]);
 });
 $app->get("func", function() use($page, $functions) {
     $id = $_REQUEST["id"] ?? null;
@@ -47,17 +52,18 @@ $app->get("func", function() use($page, $functions) {
         "id" => $id,
         "fn" => $fn,
         "host" => $functions->getHTTPHost(),
+        "navigation" => 2,
     ]);
 });
 $app->get("logs", function() use($page, $dbLogs ) {
     $lambdaLogs = Log::getMany($dbLogs);
-    $page->display("logs", ["lambda_logs" => $lambdaLogs]);
+    $page->display("logs", ["lambda_logs" => $lambdaLogs, "navigation" => 3]);
 });
 $app->get("config", function() use($page) {
-    $page->display("config");
+    $page->display("config", ["navigation" => 4]);
 });
 $app->get("docs", function() use($page) {
-    $page->display("docs");
+    $page->display("docs", ["navigation" => 6]);
 });
  
 // API 

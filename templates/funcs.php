@@ -1,8 +1,5 @@
 <?php include_once("header.php"); ?>
 
-
-<h2>Functions</h2>
-
 <br />
  
 <p>

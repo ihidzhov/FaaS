@@ -3,6 +3,7 @@
 namespace Ihidzhov\FaaS;
 
 use Exception;
+use Ihidzhov\FaaS\HTML;
 
 class Page {
 
@@ -12,6 +13,7 @@ class Page {
         }
         ob_start();
         extract($vars);
+        $navigation = HTML::buildNavigation(isset($vars["navigation"]) ? $vars["navigation"] : 1);
         include TEMPLATES_DIR . $template . '.php';
         $buffer = ob_get_contents();
         ob_end_clean();
