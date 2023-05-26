@@ -2,6 +2,9 @@
 
 namespace Ihidzhov\FaaS;
 
+use json_decode;
+use json_last_error;
+
 class Config {
 
     const FUNCTIONS_KEY = "labmda";
@@ -33,6 +36,17 @@ class Config {
         } catch (Throlable $t) {
 
         }
+    }
+
+    public static function JSONToArray($json = false) :array {
+        if (!$json) {
+            return [];
+        }
+        $array = json_decode($json, true);
+        if (json_last_error() === JSON_ERROR_NONE) {
+            return $array;    
+        }
+        return [];
     }
 
 }

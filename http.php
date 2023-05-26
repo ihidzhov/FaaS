@@ -1,6 +1,7 @@
 <?php 
 namespace Ihidzhov\FaaS;
 
+use Ihidzhov\FaaS\FaaS;
 use Ihidzhov\FaaS\Config;
 use Ihidzhov\FaaS\Func;
 use Ihidzhov\FaaS\Log;
@@ -17,6 +18,12 @@ if (!isset($_REQUEST["name"])) {
     print("Error: Not function name provided");
     exit;
 }
+
+$config = new Config($dbLambda);
+$configs = $config->get(Config::FUNCTIONS_KEY); 
+$configs = Config::JSONToArray($configs["val"]);
+
+FaaS::setConfigs($configs);
 
 $data = $functions->getByName($_REQUEST["name"]);
 if ($data) {
