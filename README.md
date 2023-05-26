@@ -5,7 +5,7 @@ Own FaaS is self hosted FaaS (Function as a Service). It is self hosted alternat
 Creating, editing, listing and deleting functions.
 Function invocations based on triggers - HTTP and Time.
 
-## Features
+## :high_brightness: Features
 - Self hosted FaaS
 - Easy set up
 - Create, list, edit and delete functions
@@ -15,7 +15,7 @@ Function invocations based on triggers - HTTP and Time.
 - Triggers - HTTP only for now
 
 
-## Upcoming features
+## :rocket: Upcoming features
 - Composer.json file to every function
 - Time based triggers (crontab)
 - More and more detailed logs
@@ -23,17 +23,19 @@ Function invocations based on triggers - HTTP and Time.
 - User preferences (HTML theme and code editor theme)
 - Documentation in the project itself
 
-## Used tech
+## :rabbit: Quick start
+
+## :floppy_disk: Used tech
 - [PHP](https://github.com/php/php-src)
 - [SQLite](https://sqlite.org)
 - [Composer](https://getcomposer.org)
 - [Bootstrap](https://getbootstrap.com/)
 - [Ace](https://ace.c9.io/)
  
-## Contributing
+## :angel: Contributing
 Thank you for considering contributing to Own FaaS.
 
-## License
+## :exclamation: License
 The Own FaaS is open-sourced software licensed under the MIT license(LICENSE).
 
 
