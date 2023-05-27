@@ -34,7 +34,7 @@
         <?php endif; ?>
         onchange="FaaS.triggers.onChange(<?php echo $triggers['time']; ?>)"
       >
-      <label class="form-check-label" for="inlineRadio2">Time</label>
+      <label class="form-check-label" for="inlineRadio2">Schedule</label>
     </div>
     
   </div>

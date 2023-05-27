@@ -48,7 +48,7 @@ $app->get("func", function() use($page, $functions) {
         $fn = $functions->get($id);
     }
     $page->display("func", [
-        "triggers" => ["http" => Trigger::TRIGGER_HTTP, "time" => Trigger::TRIGGER_TIME],
+        "triggers" => ["http" => Trigger::TRIGGER_HTTP, "time" => Trigger::TRIGGER_SCHEDULE],
         "id" => $id,
         "fn" => $fn,
         "host" => $functions->getHTTPHost(),

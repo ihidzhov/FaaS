@@ -48,19 +48,19 @@ class Func {
         $stmt->bindValue(':name', $functionName, SQLITE3_TEXT);
         $stmt->bindValue(':hash', $hash, SQLITE3_TEXT);
         $stmt->bindValue(':trigger_type', $triggerType, SQLITE3_INTEGER);
-        $stmt->bindValue(':trigger_details', json_encode($triggerDetails), SQLITE3_TEXT);
+        $stmt->bindValue(':trigger_details', $triggerDetails, SQLITE3_TEXT);
         $stmt->bindValue(':created_at', date("Y-m-d H:i:s"), SQLITE3_TEXT);
 
         $result = $stmt->execute();
         return $this->db->lastInsertRowID();
     }
 
-    public function update($id, $triggerType, $triggerDetails = []) {
+    public function update(int $id, int $triggerType, string $triggerDetails = "") {
         $sql = 'UPDATE fn SET trigger_type = :trigger_type, trigger_details = :trigger_details WHERE id = :id';
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', (int)$id, SQLITE3_INTEGER);
         $stmt->bindValue(':trigger_type', $triggerType, SQLITE3_INTEGER);
-        $stmt->bindValue(':trigger_details', json_encode($triggerDetails), SQLITE3_TEXT);
+        $stmt->bindValue(':trigger_details', $triggerDetails, SQLITE3_TEXT);
         return $stmt->execute();
     }
 
@@ -130,6 +130,20 @@ class Func {
     
     public function getList($limit = 5, $order = "DESC") :array {
         $result = $this->db->query("SELECT * FROM fn ORDER BY id {$order} LIMIT {$limit} ");
+        $data = [];
+        while($row = $result->fetchArray(\SQLITE3_ASSOC)) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    public function getScheduled($limit = false) :array {
+        $queryLimit = "";
+        if ($limit) {
+            $queryLimit = " LIMIT {$limit} ";
+        }
+        $trigger = Trigger::TRIGGER_SCHEDULE;
+        $result = $this->db->query("SELECT * FROM fn WHERE trigger_type = {$trigger} ORDER BY id ASC {$queryLimit} ");
         $data = [];
         while($row = $result->fetchArray(\SQLITE3_ASSOC)) {
             $data[] = $row;
