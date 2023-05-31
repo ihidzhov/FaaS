@@ -28,7 +28,7 @@ class HTML {
         ],
         [
             "id" => 5,
-            "slug" => "settings",
+            "slug" => "preferences",
             "name" => "User preferences",
         ],
         [
@@ -36,6 +36,16 @@ class HTML {
             "slug" => "docs",
             "name" => "Docs",
         ],
+    ];
+
+    const SITE_THEMES = [
+        1 => "Cyborg",
+        2 => "Darkly",
+        3 => "Litera",
+        4 => "Solar",
+        5 => "Superhero",
+        6 => "Yeti",
+        7 => "Quartz",
     ];
     
     public static function buildNavigation(int $current) :array {
@@ -46,6 +56,18 @@ class HTML {
             }
         }
         return $navigation;
+    }
+
+    public static function buildSiteThemes($userTheme = false) {
+        $themes = [];
+        foreach(self::SITE_THEMES as $key => $theme) {
+            $t = ["id" => $key, "name" => $theme];
+            if ($userTheme == $key) {
+                $t["selected"] = true;
+            }
+            $themes[$key] = $t;
+        }
+        return $themes;
     }
 
 

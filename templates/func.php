@@ -7,8 +7,8 @@
 </style>
 
 <div class="wrapper">
-  <h3>Function</h3>
-  
+  <h4>Function -  <?php if ($id) : ?> Edit <?php else: ?> Create <?php endif; ?></h4>
+  <br />
   <?php include_once("parts/func_trigger.php"); ?>
 
   <br />
@@ -67,15 +67,15 @@ solarized_dark
   */
 </script>
 
-<script src="./assets/ace-builds-1.5-2.0/src/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="./assets/ace-builds-1.5-2.0/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
 </script>
-<script src="./assets/ace-builds-1.5-2.0/src/theme-xcode.js" type="text/javascript" charset="utf-8"></script>
+<script src="./assets/ace-builds-1.5-2.0/src-min/theme-xcode.js" type="text/javascript" charset="utf-8"></script>
 <script>
   editor.setTheme("ace/theme/xcode");
 </script>
-<script src="./assets/ace-builds-1.5-2.0/src/mode-php.js" type="text/javascript" charset="utf-8"></script>
+<script src="./assets/ace-builds-1.5-2.0/src-min/mode-php.js" type="text/javascript" charset="utf-8"></script>
 <script>
   var PHPMode = ace.require("ace/mode/php").Mode;
   editor.session.setMode(new PHPMode());

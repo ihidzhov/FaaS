@@ -20,15 +20,15 @@
 
 <div id="editor"> </div>
    
-<script src="./assets/ace-builds-1.5-2.0/src/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="./assets/ace-builds-1.5-2.0/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
 </script>
-<script src="./assets/ace-builds-1.5-2.0/src/theme-xcode.js" type="text/javascript" charset="utf-8"></script>
+<script src="./assets/ace-builds-1.5-2.0/src-min/theme-xcode.js" type="text/javascript" charset="utf-8"></script>
 <script>
   editor.setTheme("ace/theme/xcode");
 </script>
-<script src="./assets/ace-builds-1.5-2.0/src/mode-json.js" type="text/javascript" charset="utf-8"></script>
+<script src="./assets/ace-builds-1.5-2.0/src-min/mode-json.js" type="text/javascript" charset="utf-8"></script>
 <script>
   var JSONMode = ace.require("ace/mode/json").Mode;
   editor.session.setMode(new JSONMode());

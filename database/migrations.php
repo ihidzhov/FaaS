@@ -29,6 +29,12 @@ $sql = 'CREATE TABLE IF NOT EXISTS fn (
 )';
 $dbLambda->exec($sql);
 
+$sql = 'CREATE TABLE IF NOT EXISTS preferences (
+    name VARCHAR(255) UNIQUE, 
+    value VARCHAR(255) NULL
+)';
+$dbLambda->exec($sql);
+
 
 $sql = 'CREATE table IF NOT EXISTS config (
     id INTEGER PRIMARY KEY AUTOINCREMENT, 

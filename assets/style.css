@@ -1,0 +1,78 @@
+
+body {
+  padding: 0px;
+  margin: 0px;
+  font-size: 16px;
+}
+h1, h4, h5, li, a, .form-check-label, td, th {
+  font-family: 'Open Sans', sans-serif;
+}
+main.content {
+  width: 100%;
+  max-width: 980px;
+  padding: 12px;
+  margin: 0 auto;
+}
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+h1.site-title {
+  font-size: 1.3rem;
+  padding: 0px;
+  line-height: 1.3rem;
+}
+.header ul {
+  padding-left: 24px;
+}
+ul {
+  list-style-type: none;
+  padding: 0px;
+  padding-top: 1rem;
+}
+ul li {
+  display: inline-block;
+  margin-right: 16px;
+}
+ul li.active {
+  text-decoration: underline;
+}
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.trigger-radio {
+  display: none;
+}
+.padding-12 {
+  padding: 12px 0px;
+}
+.clear {
+  clear: both;
+}
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+footer {
+  height: 120px;
+}
+
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
+
+.no-radius {
+  border-radius: 0 !important;
+}
+

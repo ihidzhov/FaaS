@@ -4,8 +4,11 @@ namespace Ihidzhov\FaaS;
 
 use Exception;
 use Ihidzhov\FaaS\HTML;
+use Ihidzhov\FaaS\Preferences;
 
 class Page {
+
+    protected $siteTheme = Preferences::SITE_THEME_DEFAULT;
 
     public function display(string $template = null, array $vars = []) :never {
         if (!file_exists(TEMPLATES_DIR . $template . '.php')) {
@@ -14,10 +17,16 @@ class Page {
         ob_start();
         extract($vars);
         $navigation = HTML::buildNavigation(isset($vars["navigation"]) ? $vars["navigation"] : 1);
+        $siteTheme = $this->siteTheme;
         include TEMPLATES_DIR . $template . '.php';
         $buffer = ob_get_contents();
         ob_end_clean();
         echo $buffer;
         exit;
     }
+
+    public function setSiteTheme($theme) {
+        $this->siteTheme = $theme;
+    }
+
 }

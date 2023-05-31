@@ -50,4 +50,3 @@ if ($functions && is_array($functions)) {
     print("Error: Functions Not Found");
     exit;
 }
- 

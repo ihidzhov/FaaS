@@ -8,11 +8,11 @@ use Ihidzhov\FaaS\Log;
 use Ihidzhov\FaaS\DB;
 use Ihidzhov\FaaS\Request;
 use Ihidzhov\FaaS\Response;
+use Ihidzhov\FaaS\Preferences;
 
 define("ROOT_DIR", dirname(__FILE__));
 
 require_once './bootstrap.php';
-
 
 $app = new App();
 $dbLambda = new DB(DB::SCHEMA_LAMBDA);
@@ -20,6 +20,10 @@ $dbLogs = new DB(DB::SCHEMA_LOGS);
 $page = new Page();
 $functions = new Func($dbLambda);
 $config = new Config($dbLambda);
+$preferences = new Preferences($dbLambda);
+
+$siteTheme = $preferences->getOne(Preferences::SITE_THEME_KEY);
+$page->setSiteTheme($siteTheme);
 
 // Web pages
 
@@ -61,10 +65,15 @@ $app->get("logs", function() use($page, $dbLogs ) {
 $app->get("config", function() use($page) {
     $page->display("config", ["navigation" => 4]);
 });
+$app->get("preferences", function() use($page, $preferences) {
+    $prf = [];
+    $prf["site_theme"] = HTML::buildSiteThemes($preferences->getOne(Preferences::SITE_THEME_KEY));
+    $page->display("preferences", ["navigation" => 5, "preferences" => $prf]);
+});
 $app->get("docs", function() use($page) {
     $page->display("docs", ["navigation" => 6]);
 });
- 
+
 // API 
 
 $app->get("api-function-code", function() use($functions) {
