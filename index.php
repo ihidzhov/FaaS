@@ -155,6 +155,17 @@ $app->put("api-update-config", function() use($config) {
     }
     Response::sentJSON($response);
 });
+$app->put("api-update-upreferences", function() use($preferences) {
+    $response = ["status"=>"error","message"=>"Error! There is something wrong"];
+    $req = json_decode(Request::getRawInput(), true);
+    foreach($req as $name => $value) {
+        $preferences->update($name, $value);
+    }
+    $response = ["status"=>"success","message"=>"Preferences was updated successfully"];
+    Response::sentJSON($response);
+});
+
+
 $app->get("api-config-code", function() use($config) {
     $cf = $config->get(Config::FUNCTIONS_KEY);
     $response = ["status"=>"error","message"=>"Error! There is something wrong"];

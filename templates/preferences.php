@@ -14,19 +14,19 @@
         <input 
           class="form-check-input" 
           type="radio" 
-          name="exampleRadios" 
-          id="exampleRadios<?php echo $theme["id"]; ?>" 
+          name="site-theme" 
+          id="site-theme<?php echo $theme["id"]; ?>" 
           value="<?php echo $theme["id"]; ?>"
           <?php if (isset($theme["selected"])) {echo "checked";} ?>
         >
-        <label class="form-check-label" for="exampleRadios<?php echo $theme["id"]; ?>">
+        <label class="form-check-label" for="site-theme<?php echo $theme["id"]; ?>">
           <?php echo $theme["name"]; ?>
         </label>
       </div>
       <?php endforeach; ?>
  
       <br /><br />
-      <button type="button" class="btn btn-primary">Submit</button>
+      <button onclick="FaaS.updateUserPreferences()" type="button" class="btn btn-primary">Submit</button>
     </form>
   </div>
   <div class="col-3">  </div>
