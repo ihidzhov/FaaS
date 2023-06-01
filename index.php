@@ -25,6 +25,9 @@ $preferences = new Preferences($dbLambda);
 $siteTheme = $preferences->getOne(Preferences::SITE_THEME_KEY);
 $page->setSiteTheme($siteTheme);
 
+$editorTheme = $preferences->getOne(Preferences::EDITOR_THEME_KEY);
+$page->setEditorTheme($editorTheme);
+
 // Web pages
 
 $app->get(["dashboard",null], function() use($page, $functions, $dbLogs) {
@@ -67,7 +70,8 @@ $app->get("config", function() use($page) {
 });
 $app->get("preferences", function() use($page, $preferences) {
     $prf = [];
-    $prf["site_theme"] = HTML::buildSiteThemes($preferences->getOne(Preferences::SITE_THEME_KEY));
+    $prf["site_theme"] = HTML::buildTheme(Preferences::SITE_THEMES, $preferences->getOne(Preferences::SITE_THEME_KEY));
+    $prf["editor_theme"] = HTML::buildTheme(Preferences::EDITOR_THEMES, $preferences->getOne(Preferences::EDITOR_THEME_KEY));
     $page->display("preferences", ["navigation" => 5, "preferences" => $prf]);
 });
 $app->get("docs", function() use($page) {

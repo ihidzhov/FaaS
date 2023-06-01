@@ -9,6 +9,7 @@ use Ihidzhov\FaaS\Preferences;
 class Page {
 
     protected $siteTheme = Preferences::SITE_THEME_DEFAULT;
+    protected $editorTheme = Preferences::EDITOR_THEME_DEFAULT;
 
     public function display(string $template = null, array $vars = []) :never {
         if (!file_exists(TEMPLATES_DIR . $template . '.php')) {
@@ -18,6 +19,7 @@ class Page {
         extract($vars);
         $navigation = HTML::buildNavigation(isset($vars["navigation"]) ? $vars["navigation"] : 1);
         $siteTheme = $this->siteTheme;
+        $editorTheme = $this->editorTheme;
         include TEMPLATES_DIR . $template . '.php';
         $buffer = ob_get_contents();
         ob_end_clean();
@@ -27,6 +29,10 @@ class Page {
 
     public function setSiteTheme($theme) {
         $this->siteTheme = $theme;
+    }
+
+    public function setEditorTheme($theme) {
+        $this->editorTheme = $theme;
     }
 
 }

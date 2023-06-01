@@ -130,16 +130,20 @@ FaaS.getLogs = (params) => {
 };
 
 FaaS.updateUserPreferences = () => {
-  let site_theme = JSON.parse(
-    document.querySelector('input[name="site-theme"]:checked').value
-  );
+  let data = {};
+  data["site_theme"] = document.querySelector(
+    'input[name="site-theme"]:checked'
+  ).value;
+  data["editor_theme"] = document.querySelector(
+    'input[name="editor-theme"]:checked'
+  ).value;
 
   fetch("index.php?action=api-update-upreferences", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ site_theme }),
+    body: JSON.stringify(data),
   })
     .then(function (res) {
       return res.json();

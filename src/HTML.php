@@ -2,6 +2,7 @@
 namespace Ihidzhov\FaaS;
 
 use Ihidzhov\FaaS\Trigger;
+use Ihidzhov\FaaS\Preferences;
 
 class HTML {
 
@@ -37,17 +38,7 @@ class HTML {
             "name" => "Docs",
         ],
     ];
-
-    const SITE_THEMES = [
-        1 => "Cyborg",
-        2 => "Darkly",
-        3 => "Litera",
-        4 => "Solar",
-        5 => "Superhero",
-        6 => "Yeti",
-        7 => "Quartz",
-    ];
-    
+ 
     public static function buildNavigation(int $current) :array {
         $navigation = self::NAVIGATION;
         foreach($navigation as $key => $nav) {
@@ -58,10 +49,10 @@ class HTML {
         return $navigation;
     }
 
-    public static function buildSiteThemes($userTheme = false) {
+    public static function buildTheme($theme, $userTheme = false) {
         $themes = [];
-        foreach(self::SITE_THEMES as $key => $theme) {
-            $t = ["id" => $key, "name" => $theme];
+        foreach($theme as $key => $thm) {
+            $t = ["id" => $key, "name" => $thm];
             if ($userTheme == $key) {
                 $t["selected"] = true;
             }

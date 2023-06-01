@@ -25,8 +25,27 @@
       </div>
       <?php endforeach; ?>
  
-      <br /><br />
-      <button onclick="FaaS.updateUserPreferences()" type="button" class="btn btn-primary">Submit</button>
+      <br />
+      <div>Editor Theme</div>
+      <br />
+      <?php foreach($preferences["editor_theme"] as $theme): ?>
+      <div class="form-check">
+        <input 
+          class="form-check-input" 
+          type="radio" 
+          name="editor-theme" 
+          id="editor-theme<?php echo $theme["id"]; ?>" 
+          value="<?php echo $theme["name"]; ?>"
+          <?php if (isset($theme["selected"])) {echo "checked";} ?>
+        >
+        <label class="form-check-label" for="editor-theme<?php echo $theme["id"]; ?>">
+          <?php echo ucfirst($theme["name"]); ?>
+        </label>
+      </div>
+      <?php endforeach; ?>
+      <br />
+      <br />
+      <button onclick="FaaS.updateUserPreferences()" type="button" class="btn btn-primary">Save</button>
     </form>
   </div>
   <div class="col-3">  </div>

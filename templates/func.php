@@ -58,22 +58,15 @@
     echo "functionID = " . $id;
   } ?>
 
-  /*
-  cobalt
-  eclipse
-monokai
-solarized_dark
-  
-  */
 </script>
 
 <script src="./assets/ace-builds-1.5-2.0/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
 </script>
-<script src="./assets/ace-builds-1.5-2.0/src-min/theme-xcode.js" type="text/javascript" charset="utf-8"></script>
+<script src="./assets/ace-builds-1.5-2.0/src-min/theme-<?php echo $editorTheme; ?>.js" type="text/javascript" charset="utf-8"></script>
 <script>
-  editor.setTheme("ace/theme/xcode");
+  editor.setTheme("ace/theme/<?php echo $editorTheme; ?>");
 </script>
 <script src="./assets/ace-builds-1.5-2.0/src-min/mode-php.js" type="text/javascript" charset="utf-8"></script>
 <script>
