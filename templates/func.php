@@ -60,15 +60,27 @@
 
 </script>
 
-<script src="./assets/ace-builds-1.5-2.0/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+<script 
+  src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.19.0/ace.min.js" 
+  charset="utf-8"
+></script>
+
 <script>
     var editor = ace.edit("editor");
 </script>
-<script src="./assets/ace-builds-1.5-2.0/src-min/theme-<?php echo $editorTheme; ?>.js" type="text/javascript" charset="utf-8"></script>
+ 
+<script 
+  src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.19.0/theme-<?php echo $editorTheme; ?>.min.js" 
+  charset="utf-8"
+></script>
+
 <script>
   editor.setTheme("ace/theme/<?php echo $editorTheme; ?>");
 </script>
-<script src="./assets/ace-builds-1.5-2.0/src-min/mode-php.js" type="text/javascript" charset="utf-8"></script>
+<script 
+  src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.9.6/mode-php.min.js" 
+  charset="utf-8"
+></script>
 <script>
   var PHPMode = ace.require("ace/mode/php").Mode;
   editor.session.setMode(new PHPMode());

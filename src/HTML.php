@@ -53,7 +53,7 @@ class HTML {
         $themes = [];
         foreach($theme as $key => $thm) {
             $t = ["id" => $key, "name" => $thm];
-            if ($userTheme == $key) {
+            if ($userTheme == $key || $userTheme == $thm) {
                 $t["selected"] = true;
             }
             $themes[$key] = $t;
