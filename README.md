@@ -5,6 +5,9 @@ Own FaaS is self hosted FaaS (Function as a Service). It is self hosted alternat
 Creating, editing, listing and deleting functions.
 Function invocations based on triggers - HTTP and Time.
 
+
+![Own FaaS](https://github.com/ihidzhov/FaaS/blob/main/screenshots/ScreenshotHttps.png?raw=true&v=1 "Own FaaS")
+
 ## :high_brightness: Features
 - Self hosted FaaS
 - Easy set up
