@@ -25,6 +25,17 @@ Function invocations based on triggers - HTTP and Time.
 
 ## :rabbit: Quick start
 
+```Bash
+git clone https://github.com/ihidzhov/FaaS
+cd FaaS
+php database/migrations.php
+php -S localhost:9090 
+```
+
+It is better to move the project to web servers like Apache or Nginx.
+
+
+
 ## :floppy_disk: Used tech
 - [PHP](https://github.com/php/php-src)
 - [SQLite](https://sqlite.org)
