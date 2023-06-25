@@ -35,8 +35,7 @@ php database/migrations.php
 php -S localhost:9090 
 ```
 
-It is better to move the project to web servers like Apache or Nginx.
-
+It is better to move the project to web servers like Apache or NGINX.
 
 
 ## :floppy_disk: Used tech
