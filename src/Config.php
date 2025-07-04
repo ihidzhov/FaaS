@@ -7,7 +7,7 @@ use json_last_error;
 
 class Config {
 
-    const FUNCTIONS_KEY = "labmda";
+    const FUNCTIONS_KEY = "lambda";
 
     public function __construct(protected $db = null) { }
 
