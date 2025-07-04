@@ -11,7 +11,7 @@ class Config {
 
     public function __construct(protected $db = null) { }
 
-    public function get(string $name = null) {
+    public function get(?string $name = null) {
         if (!$name) {
             return false;
         }

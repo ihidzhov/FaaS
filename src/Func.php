@@ -6,7 +6,8 @@ use Ihidzhov\FaaS\Trigger;
 
 class Func {
 
-    public function __construct(protected $db = null) { }
+    public function __construct(protected $db = null) {}
+ 
  
     public function getAll() {
         $result = $this->db->query('SELECT * FROM fn');
@@ -17,7 +18,7 @@ class Func {
         return $data;
     }
 
-    public function get(int|null $id = null) {
+    public function get(?int $id = null) {
         if (!$id) {
             return false;
         }
@@ -27,7 +28,7 @@ class Func {
         return $result->fetchArray(\SQLITE3_ASSOC);
     }
 
-    public function getByName(string $str = null) {
+    public function getByName(?string $str = null) {
         if (!$str) {
             return false;
         }
