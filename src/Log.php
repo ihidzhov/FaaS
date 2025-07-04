@@ -31,7 +31,7 @@ class Log {
 
     }
 
-    public static function getMany($dbLogs, int $offset = 0, int $limit = 10, $search = false, string $order = "DESC") {
+    public static function getMany($dbLogs, int $offset = 0, int $limit = 10, ?string $search = null, string $order = "DESC") {
         try {
             $where = "";
             if ($search) {

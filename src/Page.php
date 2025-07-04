@@ -11,7 +11,7 @@ class Page {
     protected $siteTheme = Preferences::SITE_THEME_DEFAULT;
     protected $editorTheme = Preferences::EDITOR_THEME_DEFAULT;
 
-    public function display(string $template = null, array $vars = []) :never {
+    public function display(?string $template = null, array $vars = []) :never {
         if (!file_exists(TEMPLATES_DIR . $template . '.php')) {
             throw new Exception("Templage \"{$template}.php\" does not exists");
         }

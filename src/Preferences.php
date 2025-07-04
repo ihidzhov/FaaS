@@ -40,7 +40,7 @@ class Preferences {
     
     public function __construct(protected $db = null) { }
 
-    public function getOne(string $name = null) {
+    public function getOne(?string $name = null) {
         if (!$name || !isset(self::THEME_ARRAY[$name])) {
             throw new Exception("The name must be provided or valid");
         }

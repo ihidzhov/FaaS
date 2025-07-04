@@ -5,22 +5,23 @@ Own FaaS is self hosted FaaS (Function as a Service). It is self hosted alternat
 Creating, editing, listing and deleting functions.
 Function invocations based on triggers - HTTP and Time.
 
+
+![Own FaaS](https://github.com/ihidzhov/FaaS/blob/main/screenshots/ScreenshotHttps.png?raw=true&v=1 "Own FaaS")
+
 ## :high_brightness: Features
 - Self hosted FaaS
 - Easy set up
 - Create, list, edit and delete functions
+- Triggers - HTTP
+- Triggers - Time based triggers (crontab)
 - Web based code editor
-- Congigs, easy to use in OOP way when function
 - Logs for every function invocation
-- Triggers - HTTP only for now
-
+- User preferences (HTML theme and code editor theme)
 
 ## :rocket: Upcoming features
 - Composer.json file to every function
-- Time based triggers (crontab)
 - More and more detailed logs
 - Error logs
-- User preferences (HTML theme and code editor theme)
 - Documentation in the project itself
 
 ## :rabbit: Quick start
@@ -32,8 +33,7 @@ php database/migrations.php
 php -S localhost:9090 
 ```
 
-It is better to move the project to web servers like Apache or Nginx.
-
+It is better to move the project to web servers like Apache or NGINX.
 
 
 ## :floppy_disk: Used tech
